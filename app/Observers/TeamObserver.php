@@ -20,19 +20,12 @@ class TeamObserver
 
         $rolesAndPermissions = $this->getStandardRolesAndPermissions();
 
-        /** @var Role|null O objeto do cargo que queremos atribuir ao usuário */
-        $roleToAssignToCreator = null;
-
         foreach ($rolesAndPermissions as $roleName => $data) {
             $role = Role::firstOrCreate([
                 'name'       => $roleName,
                 'guard_name' => 'web',
                 'team_id'    => $team->id,
             ]);
-
-            if ($roleName === 'super_admin') {
-                $roleToAssignToCreator = $role;
-            }
 
             $permissionsForRole = $this->getPermissionsForRole($data);
 
@@ -56,7 +49,7 @@ class TeamObserver
     {
         return [
             'super_admin' => [
-                'models'             => ['User', 'Role', 'Task', 'Label', 'Team'], // Pode manter 'all' se preferir
+                'models'             => ['User', 'Role', 'Task', 'Label', 'Team'],
                 'custom_permissions' => [
                     'page_ManageSetting',
                     'page_MyProfilePage',
