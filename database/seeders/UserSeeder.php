@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
         $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'is_team_creator' => true,
         ]);
 
         $user->teams()->attach($team, [

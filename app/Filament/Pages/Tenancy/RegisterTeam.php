@@ -30,11 +30,21 @@ class RegisterTeam extends RegisterTenant
 
     protected function handleRegistration(array $data): Team
     {
+        if (!Auth::check() || !Auth::user()->is_team_creator) {
+            throw new \Exception('Unauthorized action.');
+        }
+
         $team = Team::create($data);
 
         $team->users()->attach(auth()->user());
 
         return $team;
     }
+
+    public static function canView(): bool
+    {
+        return Auth::check() && Auth::user()->is_team_creator;
+    }
+
 
 }
